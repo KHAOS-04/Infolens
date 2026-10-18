@@ -1,0 +1,213 @@
+import re
+
+from app.schemas import AnalyzeRequest
+
+# ---------------------------------------------------------------------------
+# Editable keyword lists. Keep every term lowercase.
+# Matching is by whole word or whole phrase, so "cure" does not match "secure".
+# Plural and other forms are listed explicitly (for example "vaccine" and "vaccines").
+# ---------------------------------------------------------------------------
+
+# Words that point to a health claim (spaCy's small model has no DISEASE label).
+HEALTH_KEYWORDS = [
+    "disease", "diseases", "illness", "illnesses", "cancer", "diabetes",
+    "hypertension", "covid", "dengue", "flu", "influenza", "tuberculosis",
+    "pneumonia", "measles", "polio", "malaria", "hiv", "virus", "viruses",
+    "infection", "infections", "outbreak", "pandemic", "epidemic", "symptom",
+    "symptoms", "fever", "treatment", "treatments", "therapy", "remedy",
+    "remedies", "cure", "cures", "cured", "vaccine", "vaccines",
+    "vaccination", "vaccinated", "medicine", "medicines", "medication",
+    "medications", "antibiotic", "antibiotics", "immunity", "herbal",
+    "diagnosis", "patient", "patients",
+]
+
+# Health bodies. Only counted when spaCy tagged the entity as ORG.
+HEALTH_ORGS = [
+    "doh", "who", "world health organization", "department of health", "cdc",
+    "centers for disease control and prevention", "fda",
+    "food and drug administration", "philhealth", "nih","DOH"
+]
+
+# Words about officials, elections, laws and policy.
+POLITICAL_KEYWORDS = [
+    "president", "senator", "senators", "congressman", "congresswoman",
+    "mayor", "governor", "lawmaker", "lawmakers", "politician", "politicians",
+    "government", "administration", "election", "elections", "electoral",
+    "vote", "votes", "voter", "voters", "ballot", "candidate", "candidates",
+    "senate", "congress", "parliament", "legislation", "law", "laws",
+    "policy", "policies", "ordinance", "executive order", "impeachment",
+    "minister", "cabinet", "regulation", "regulations", "tax", "taxes",
+    "officials", "supreme court", "comelec", "senate bill", "house bill",
+]
+
+# If a PERSON, GPE or ORG name contains one of these, it is a government body.
+GOVERNMENT_ENTITY_MARKERS = [
+    "senate", "congress", "department", "commission", "ministry", "bureau",
+    "parliament", "supreme court", "city hall", "government",
+    "house of representatives", "white house", "comelec", "dilg", "dswd",
+    "dpwh", "deped", "pnp", "afp",
+]
+
+# Words or phrases that are enough on their own to mark an announcement.
+ANNOUNCEMENT_KEYWORDS = [
+    "announcement", "announcements", "announces", "advisory", "notice",
+    "notification", "scheduled", "rescheduled", "maintenance", "interruption",
+    "downtime", "suspended", "suspension", "postponed", "hereby",
+    "memorandum", "circular", "reminder", "please be advised",
+    "please be informed", "pleased to announce", "for your information",
+    "effective immediately", "will be closed", "will be unavailable",
+    "will be held", "will take place", "will resume", "class suspension",
+    "no classes", "power outage", "office hours",
+]
+
+# These only count as an announcement when the text also has a DATE or TIME entity.
+ANNOUNCEMENT_DATE_WORDS = [
+    "effective", "starting", "beginning", "until", "deadline",
+    "no later than", "will start", "will begin",
+]
+
+# Marketing language and product references.
+MARKETING_KEYWORDS = [
+    "sale", "discount", "discounts", "promo", "promotion", "promotional",
+    "deals", "best deal", "coupon", "coupons", "voucher", "vouchers",
+    "exclusive", "bestseller", "bestselling", "guaranteed", "giveaway",
+    "sponsored", "brand new", "our product", "our products", "new product",
+    "this product", "product launch", "new arrival", "new arrivals",
+    "special offer", "limited offer", "limited time", "free shipping",
+    "free trial", "free gift", "100% free", "best price", "lowest price",
+    "bargain", "unbeatable",
+]
+
+# Calls to action.
+CALL_TO_ACTION_PHRASES = [
+    "buy now", "order now", "shop now", "click here", "click the link",
+    "sign up", "subscribe", "act now", "call now", "dm us", "link in bio",
+    "while supplies last", "don't miss", "hurry", "grab yours", "get yours",
+    "order today", "follow us", "share this", "tag a friend", "use code",
+    "promo code", "add to cart", "visit our",
+]
+
+# Clickbait and viral-content phrases.
+CLICKBAIT_PHRASES = [
+    "you won't believe", "what happens next", "viral", "must see",
+    "must-see", "mind-blowing", "jaw-dropping", "shocking", "unbelievable",
+    "doctors hate", "this one trick", "one weird trick", "gone wrong",
+    "before it gets deleted", "before it's deleted", "forward this",
+]
+
+# Subjective or evaluative language.
+SUBJECTIVE_WORDS = [
+    "i think", "i believe", "i feel", "in my opinion", "in my view", "imo",
+    "if you ask me", "should", "best", "worst", "terrible", "awful",
+    "horrible", "disgusting", "ridiculous", "shameful", "unacceptable",
+    "pathetic", "overrated", "underrated", "stupid", "foolish", "fantastic",
+    "wonderful", "brilliant", "love", "hate", "disappointing", "outrageous",
+    "absurd", "nonsense", "unfair",
+]
+
+# ---------------------------------------------------------------------------
+# Other settings.
+# ---------------------------------------------------------------------------
+
+POLITICAL_ENTITY_LABELS = {"PERSON", "GPE", "ORG"}
+DATE_ENTITY_LABELS = {"DATE", "TIME"}
+MAX_OPINION_ENTITIES = 2   # "few entities" means this many or fewer
+NEUTRAL_LIMIT = 0.05       # tone: |compound| up to this is Neutral
+STRONG_LIMIT = 0.30        # tone: |compound| above this is strong
+
+
+# Return True if any term appears in the text as a whole word or phrase,
+# or appears exactly in the keywords list. Matching ignores upper/lower case.
+def _has_any_term(terms: list[str], text: str, keywords: list[str] = ()) -> bool:
+    lowered = text.lower().replace("’", "'")
+    keyword_set = {word.lower() for word in keywords}
+    for term in terms:
+        if term in keyword_set:
+            return True
+        pattern = r"(?<![a-z0-9])" + re.escape(term) + r"(?![a-z0-9])"
+        if re.search(pattern, lowered):
+            return True
+    return False
+
+
+# Rule 1: health keywords, or a health body such as DOH or WHO tagged as ORG.
+def _is_health_claim(text: str, entities: list[tuple[str, str]], keywords: list[str]) -> bool:
+    if _has_any_term(HEALTH_KEYWORDS, text, keywords):
+        return True
+    for entity_text, label in entities:
+        if label == "ORG" and _has_any_term(HEALTH_ORGS, entity_text):
+            return True
+    return False
+
+
+# Rule 2: political keywords, or a PERSON/GPE/ORG whose name is a government body.
+def _is_political(text: str, entities: list[tuple[str, str]], keywords: list[str]) -> bool:
+    if _has_any_term(POLITICAL_KEYWORDS, text, keywords):
+        return True
+    for entity_text, label in entities:
+        if label in POLITICAL_ENTITY_LABELS and _has_any_term(GOVERNMENT_ENTITY_MARKERS, entity_text):
+            return True
+    return False
+
+
+# Rule 3: official notice wording, or a date plus a schedule word like "until".
+def _is_announcement(text: str, entities: list[tuple[str, str]], keywords: list[str]) -> bool:
+    if _has_any_term(ANNOUNCEMENT_KEYWORDS, text, keywords):
+        return True
+    has_date = any(label in DATE_ENTITY_LABELS for _, label in entities)
+    return has_date and _has_any_term(ANNOUNCEMENT_DATE_WORDS, text, keywords)
+
+
+# Rule 4: marketing language, calls to action or clickbait phrases.
+def _is_promotional(text: str, keywords: list[str]) -> bool:
+    all_terms = MARKETING_KEYWORDS + CALL_TO_ACTION_PHRASES + CLICKBAIT_PHRASES
+    return _has_any_term(all_terms, text, keywords)
+
+
+# Rule 5: few entities and at least one subjective word.
+def _is_opinion(text: str, entities: list[tuple[str, str]], keywords: list[str]) -> bool:
+    if len(entities) > MAX_OPINION_ENTITIES:
+        return False
+    return _has_any_term(SUBJECTIVE_WORDS, text, keywords)
+
+
+# Decide the content type. The rules run in priority order; the first match wins.
+# entities are (entity_text, spaCy_label) pairs, e.g. ("DOH", "ORG").
+# keywords are lowercase words or lemmas taken from the text.
+def classify_content_type(text: str, entities: list[tuple[str, str]], keywords: list[str]) -> str:
+    if _is_health_claim(text, entities, keywords):
+        return "Health Claim"
+    if _is_political(text, entities, keywords):
+        return "Political or Government"
+    if _is_announcement(text, entities, keywords):
+        return "Announcement"
+    if _is_promotional(text, keywords):
+        return "Promotional or Viral Content"
+    if _is_opinion(text, entities, keywords):
+        return "Opinion or Editorial"
+    return "General Factual Claim"
+
+
+# Turn a VADER compound score (-1 to 1) into a tone label and a tone score.
+# tone_score = 1 - abs(compound), so 1.0 means perfectly neutral.
+def classify_content_tone(compound: float, text: str) -> tuple[str, float]:
+    # The "not (... <= ...)" form also rejects NaN.
+    if not -1.0 <= compound <= 1.0:
+        raise ValueError("compound must be between -1.0 and 1.0")
+
+    tone_score = 1 - abs(compound)
+
+    if -NEUTRAL_LIMIT <= compound <= NEUTRAL_LIMIT:
+        label = "Neutral"
+    elif NEUTRAL_LIMIT < compound <= STRONG_LIMIT:
+        label = "Informational"
+    elif -STRONG_LIMIT <= compound < -NEUTRAL_LIMIT:
+        label = "Misleading"
+    elif compound > STRONG_LIMIT and _has_any_term(MARKETING_KEYWORDS + CALL_TO_ACTION_PHRASES, text):
+        label = "Promotional"
+    else:
+        label = "Exaggerated"
+
+    return label, tone_score
+
+

@@ -1,0 +1,21 @@
+{
+  "content_type": "news_article",
+  "content_tone": "neutral",
+  "information_status": "partially_verified",
+  "analysis_paragraph": "This text reads like a short news report written in a neutral tone. Its main claims match what several reputable outlets have reported, but one statistic could not be confirmed. Treat the confirmed parts as reliable and check the unconfirmed figure before sharing it.",
+  "sources": [
+    {
+      "title": "Example Wire: Report on the event",
+      "url": "https://www.example-wire.com/reports/event-123",
+      "domain": "example-wire.com",
+      "tier": 1
+    },
+    {
+      "title": "Example Times: Background and context",
+      "url": "https://www.example-times.com/world/event-123",
+      "domain": "example-times.com",
+      "tier": 2
+    }
+  ],
+  "notice": "This is a sample response. Real analysis is not implemented yet."
+}
