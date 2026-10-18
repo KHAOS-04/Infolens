@@ -1,0 +1,7 @@
+[
+  {"title": "SAMPLE placeholder 1 (replace with a real search result)", "url": "https://www.who.int/", "snippet": "Placeholder snippet for testing the pipeline. Not a real search result."},
+  {"title": "SAMPLE placeholder 2 (replace with a real search result)", "url": "https://doh.gov.ph/", "snippet": "Placeholder snippet for testing the pipeline. Not a real search result."},
+  {"title": "SAMPLE placeholder 3 (replace with a real search result)", "url": "https://www.rappler.com/", "snippet": "Placeholder snippet for testing the pipeline. Not a real search result."},
+  {"title": "SAMPLE placeholder 4 (replace with a real search result)", "url": "https://en.wikipedia.org/", "snippet": "Placeholder snippet for testing the pipeline. Not a real search result."},
+  {"title": "SAMPLE placeholder 5 (replace with a real search result)", "url": "https://example-blog.com/", "snippet": "Placeholder snippet for testing the pipeline. Not a real search result."}
+]

@@ -1,0 +1,7 @@
+{
+  "Supported": "We found {source_count} source(s) that support this claim (top source: {top_source_domain}). The main points appear well supported, but it is still worth reading the sources yourself.",
+  "Partially Supported": "We found {source_count} source(s) (top source: {top_source_domain}). They support parts of this claim but not all of it, so check the details before sharing.",
+  "Limited Evidence": "We found {source_count} source(s) (top source: {top_source_domain}), but the evidence is thin. Treat this claim with caution until stronger sources confirm it.",
+  "Not Supported": "We found {source_count} source(s) (top source: {top_source_domain}) and the evidence points against this claim. Do not share it without further checking.",
+  "Recent or Not Yet Widely Confirmed": "We found only {source_count} source(s) so far (top source: {top_source_domain}). This may be recent news that is not yet widely confirmed, so check again later."
+}
