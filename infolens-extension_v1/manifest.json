@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Infolens",
+  "version": "0.1.0",
+  "description": "Shows credibility indicators for content you select on a web page.",
+  "permissions": ["contextMenus", "scripting", "activeTab"],
+  "host_permissions": ["http://localhost:8000/*", "http://127.0.0.1:8000/*"],
+  "background": { "service_worker": "background.js" }
+}
