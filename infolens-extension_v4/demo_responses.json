@@ -1,0 +1,177 @@
+{
+  "_about": "Sample results for the demo claims in demo/demo-page.html. Used ONLY in demonstration mode, and always shown with the 'Demonstration data' label. Each 'claim' must match the claim text on the demo page (a partial selection of it also matches). If the team replaces a claim on the page, replace it here too. Source links are real home pages, with no invented deep links. Image entries use image_match: if the image address contains any of those words, that entry's result is shown (demonstration mode only). Entries with an empty claim are matched by image only.",
+  "claims": [
+    {
+      "id": "guava-dengue",
+      "claim": "Boiled guava leaves can cure dengue.",
+      "response": {
+        "content_type": "Health Claim",
+        "content_tone": "Misleading",
+        "information_status": "Limited or No Strong Supporting Evidence",
+        "analysis_paragraph": "There is no medical proof that boiled guava leaves can cure dengue. Dengue is a serious illness that requires proper medical care and monitoring. Some sources mention that guava leaves may have general health benefits, but they are not recognized as a treatment for dengue. Relying only on home remedies can be dangerous and may delay proper treatment.",
+        "sources": [
+          {
+            "title": "Department of Health (sample source)",
+            "url": "https://doh.gov.ph"
+          },
+          {
+            "title": "World Health Organization (sample source)",
+            "url": "https://www.who.int"
+          },
+          {
+            "title": "Research Institute for Tropical Medicine (sample source)",
+            "url": "https://www.ritm.gov.ph"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "class-suspension",
+      "claim": "The city government announced that classes will be suspended on Friday because of heavy rain.",
+      "response": {
+        "content_type": "News Statement",
+        "content_tone": "Neutral",
+        "information_status": "Recent or Not Yet Widely Confirmed",
+        "analysis_paragraph": "This reads like a news announcement about class suspensions. Announcements like this change quickly, and we could not find several independent reports that confirm it yet. Please check the official page of the local government and a weather advisory before relying on it.",
+        "sources": [
+          {
+            "title": "Philippine News Agency (sample source)",
+            "url": "https://www.pna.gov.ph"
+          },
+          {
+            "title": "PAGASA weather advisories (sample source)",
+            "url": "https://www.pagasa.dost.gov.ph"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "water-boiling",
+      "claim": "Water boils at 100 degrees Celsius at sea level.",
+      "response": {
+        "content_type": "Factual Statement",
+        "content_tone": "Neutral",
+        "information_status": "Supported",
+        "analysis_paragraph": "This is a well-known scientific fact, and it is widely documented. At standard sea-level pressure, pure water boils at 100 degrees Celsius. The boiling point is lower at higher altitudes because the air pressure is lower.",
+        "sources": [
+          {
+            "title": "National Institute of Standards and Technology (sample source)",
+            "url": "https://www.nist.gov"
+          },
+          {
+            "title": "Encyclopaedia Britannica (sample source)",
+            "url": "https://www.britannica.com"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "mayon-volcano",
+      "claim": "Ang Bulkang Mayon ay isa sa mga pinakaaktibong bulkan sa Pilipinas.",
+      "response": {
+        "content_type": "Factual Statement",
+        "content_tone": "Neutral",
+        "information_status": "Supported",
+        "analysis_paragraph": "This Filipino statement says that Mayon Volcano is one of the most active volcanoes in the Philippines. Volcano monitoring agencies and volcano databases describe Mayon as one of the country's most active volcanoes. For current activity updates, please check the official volcano bulletins.",
+        "sources": [
+          {
+            "title": "Philippine Institute of Volcanology and Seismology (sample source)",
+            "url": "https://www.phivolcs.dost.gov.ph"
+          },
+          {
+            "title": "Smithsonian Global Volcanism Program (sample source)",
+            "url": "https://volcano.si.edu"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "brown-rice",
+      "claim": "Mas healthy daw ang brown rice kaysa sa white rice dahil mas marami itong fiber.",
+      "response": {
+        "content_type": "Health Claim",
+        "content_tone": "Informational",
+        "information_status": "Partially Supported",
+        "analysis_paragraph": "This Taglish statement says brown rice is healthier than white rice because it has more fiber. Brown rice does keep more fiber than white rice, which is supported. Whether it is healthier overall depends on a person's diet and health needs, so the claim is only partly supported. A nutrition professional can give advice that fits you.",
+        "sources": [
+          {
+            "title": "Food and Nutrition Research Institute (sample source)",
+            "url": "https://www.fnri.dost.gov.ph"
+          },
+          {
+            "title": "World Health Organization (sample source)",
+            "url": "https://www.who.int"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "estancia-dengue-text",
+      "claim": "Estancia recorded 460 dengue cases, including eight deaths, from Jan. 4 to Oct. 10, 2026",
+      "response": {
+        "content_type": "News Statement",
+        "content_tone": "Neutral",
+        "information_status": "Supported",
+        "analysis_paragraph": "This statement reports dengue figures for Estancia, Iloilo. A Daily Guardian report published on October 16, 2026, which cites the Provincial Health Office, gives the same numbers: 460 cases and eight deaths from January 4 to October 10, 2026, the most among the province's local government units. An earlier Daily Guardian report from September 14 also showed Estancia with the most cases at that time, so the figures fit the trend. We found these numbers in one news outlet's report of health office data, so please check the Provincial Health Office or the Department of Health for the latest counts.",
+        "sources": [
+          {
+            "title": "Daily Guardian: Estancia dengue cases surge 355%, highest in Iloilo",
+            "url": "https://www.dailyguardian.com.ph/blog/estancia-dengue-cases-surge-355-highest-in-iloilo"
+          },
+          {
+            "title": "Daily Guardian: Dengue clustering hits 96 Iloilo barangays amid 35% case drop",
+            "url": "https://www.dailyguardian.com.ph/blog/dengue-clustering-hits-96-iloilo-barangays-amid-35-case-drop"
+          },
+          {
+            "title": "Department of Health: Dengue Prevention and Control Program",
+            "url": "https://doh.gov.ph/uhc/health-programs/dengue-prevention-and-control-program/"
+          },
+          {
+            "title": "World Health Organization: Dengue fact sheet",
+            "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue"
+          }
+        ],
+        "notice": null
+      }
+    },
+    {
+      "id": "estancia-dengue-image",
+      "claim": "",
+      "image_match": [
+        "fbcdn.net",
+        "dailyguardian.com.ph"
+      ],
+      "image_text": "Estancia dengue cases surge 355%, highest in Iloilo",
+      "response": {
+        "content_type": "News Headline",
+        "content_tone": "Informational",
+        "information_status": "Supported",
+        "analysis_paragraph": "This image shows a news headline saying that dengue cases in Estancia surged 355%, the highest in Iloilo. The Daily Guardian article with this headline, published on October 16, 2026 and citing the Provincial Health Office, reports 460 cases from January 4 to October 10, 2026, compared with 101 in the same period last year, which is an increase of about 355 percent. Estancia had the most cases among the province's 43 local government units. Provincewide, cases fell 16 percent, so the increase does not apply to the whole province. Please check official health office updates for the latest counts.",
+        "sources": [
+          {
+            "title": "Daily Guardian: Estancia dengue cases surge 355%, highest in Iloilo",
+            "url": "https://www.dailyguardian.com.ph/blog/estancia-dengue-cases-surge-355-highest-in-iloilo"
+          },
+          {
+            "title": "Daily Guardian: Dengue clustering hits 96 Iloilo barangays amid 35% case drop",
+            "url": "https://www.dailyguardian.com.ph/blog/dengue-clustering-hits-96-iloilo-barangays-amid-35-case-drop"
+          },
+          {
+            "title": "Department of Health: Dengue Prevention and Control Program",
+            "url": "https://doh.gov.ph/uhc/health-programs/dengue-prevention-and-control-program/"
+          },
+          {
+            "title": "World Health Organization: Dengue fact sheet",
+            "url": "https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue"
+          }
+        ],
+        "notice": null
+      }
+    }
+  ]
+}
