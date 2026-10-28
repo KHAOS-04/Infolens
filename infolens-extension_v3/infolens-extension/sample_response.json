@@ -1,0 +1,12 @@
+{
+  "content_type": "Health Claim",
+  "content_tone": "Misleading",
+  "information_status": "Limited or No Strong Supporting Evidence",
+  "analysis_paragraph": "There is no medical proof that boiled guava leaves can cure dengue. Dengue is a serious illness that requires proper medical care and monitoring. Some sources mention that guava leaves may have general health benefits, but they are not recognized as a treatment for dengue. Relying only on home remedies can be dangerous and may delay proper treatment.",
+  "sources": [
+      { "title": "Department of Health - Dengue Misconceptions", "url": "https://doh.gov.ph" },
+      { "title": "World Health Organization - Dengue Medical Standards", "url": "https://www.who.int" },
+      { "title": "Research Institute for Tropical Medicine Study on Dengue", "url": "https://www.ritm.gov.ph" }
+  ],
+  "notice": null
+}
