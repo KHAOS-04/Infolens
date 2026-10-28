@@ -1,0 +1,12 @@
+{
+  "content_type": "Health Claim",
+  "content_tone": "Informational",
+  "information_status": "Supported",
+  "analysis_paragraph": "This looks like a health claim written in an informational tone. We found 3 sources that discuss it, and the strongest one is from doh.gov.ph. Please read the sources below and check official health websites before you share it.",
+  "sources": [
+    { "title": "Department of Health (sample source)", "url": "https://doh.gov.ph", "domain": "doh.gov.ph", "tier": 1 },
+    { "title": "World Health Organization (sample source)", "url": "https://www.who.int", "domain": "who.int", "tier": 1 },
+    { "title": "Rappler (sample source)", "url": "https://www.rappler.com", "domain": "rappler.com", "tier": 3 }
+  ],
+  "notice": null
+}
