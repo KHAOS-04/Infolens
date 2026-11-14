@@ -1,0 +1,21 @@
+# Infolens back-end. Install with:  pip install -r requirements.txt
+# Versions are loose for now. Phase 8 pins exact versions.
+
+# Web server
+fastapi>=0.110
+uvicorn[standard]>=0.29
+httpx>=0.27
+
+# Config and search
+python-dotenv>=1.0
+tavily-python>=0.5
+
+# NLP
+spacy>=3.7
+vaderSentiment>=3.3
+sentence-transformers>=3.0
+langdetect>=1.0.9
+deep-translator>=1.11
+
+# Tests
+pytest>=8.0
